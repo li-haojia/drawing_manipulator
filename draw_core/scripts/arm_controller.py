@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 import rospy
 
@@ -9,16 +10,18 @@ import moveit_msgs.msg
 import geometry_msgs.msg
 from std_msgs.msg import String
 
-def controller: 
-    moveit_msgs.roscpp_initialization(sys.argv)     # TODO: what for?
+
+def controller(): 
+    moveit_commander.roscpp_initialize(sys.argv)     # TODO: what for?
     rospy.init_node('drawing_control', anonymous = True)
 
     manipulator = moveit_commander.RobotCommander()
-    group_name = "drawing_robot"
+    group_name = "manipulator_i5"
     group = moveit_commander.MoveGroupCommander(group_name)
 
     # initial settings
-    String reference = "world"
+    reference = String()
+    reference = "world"
     group.set_pose_reference_frame(reference)
     group.allow_replanning(True)
     group.set_max_velocity_scaling_factor(0.4)      # TODO: What for?
@@ -29,7 +32,8 @@ def controller:
 
     # get current state
     current_state = geometry_msgs.msg.Pose()
-    current_state = manipulator.get_current_state()
+    # current_state = manipulator.get_current_state()
+    current_state = group.get_current_pose().pose
 
     # set target state
     target_state = geometry_msgs.msg.Pose()
@@ -47,6 +51,9 @@ def controller:
     plan = group.go(wait = True)
     group.stop()
     group.clear_pose_targets()
+
+if __name__=="__main__":
+    controller()
 
 
 
