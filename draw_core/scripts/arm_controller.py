@@ -38,6 +38,7 @@ class Arm_Contrl:
         # set plan
         # self.plan = plan
         # test
+        
         waypoints = []
         wpose = self.group.get_current_pose().pose
         wpose.position.z -= 0.1  # First move up (z)
