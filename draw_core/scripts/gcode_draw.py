@@ -8,6 +8,7 @@ class Interpreter():
         self.planner = None
         self.fr = 0
         self.EOF = False
+        self.mac.ignore_invalid_modal = True
 
     def setPlanner(self, planner):
         self.planner = planner
@@ -18,8 +19,12 @@ class Interpreter():
         self.file = open(fname, "r")
 
     def gcode_draw(self,fname):
-        for line_txt in self.file.readline():
+        self.loadFile(fname)
+        for line_txt in self.file.readlines():
             line = Line(line_txt)
+            if len(line.block.gcodes) == 0:
+                continue
+            
             block = self.mac.block_modal_gcodes(line.block)
             xb, yb, zb = self.mac.pos.vector
             self.mac.process_gcodes(*sorted(block))
@@ -57,8 +62,7 @@ class Interpreter():
 
 if __name__=="__main__":
     g = Interpreter()
-    manipulator = gcode_excute(0,0,0,0)
+    manipulator = gcode_excute.gcode_excute(0,0,0,0)
     g.setPlanner(manipulator)
-    g.loadFile("/home/derek/project/draw_robot/src/drawing_manipulator/draw_core/scripts/img/gcode.gcode")
-    g.gcode_draw()
+    g.gcode_draw("/home/derek/project/draw_robot/src/drawing_manipulator/draw_core/scripts/img/gcode.gcode")
 

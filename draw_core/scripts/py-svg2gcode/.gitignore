@@ -1,0 +1,8 @@
+# Compiled Python Files
+*.pyc
+
+# Gcode outputs
+tests/gcode_output
+
+# Log Files
+tests/log

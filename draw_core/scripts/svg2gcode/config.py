@@ -5,16 +5,16 @@ preamble = "G28\nG1 Z5.0"
 postamble = "G28"
 
 """G-code emitted before processing a SVG shape"""
-shape_preamble = "G4 P200"
+shape_preamble = "M03"
 
 """G-code emitted after processing a SVG shape"""
-shape_postamble = "G4 P200"
+shape_postamble = "M04"
 
 """Print bed width in mm"""
-bed_max_x = 200
+bed_max_x = 100
 
 """Print bed height in mm"""
-bed_max_y = 200
+bed_max_y = 100
 
 """ 
 Used to control the smoothness/sharpness of the curves.
