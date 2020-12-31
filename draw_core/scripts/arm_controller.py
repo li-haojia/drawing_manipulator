@@ -3,6 +3,7 @@ import sys
 import rospy
 import time
 import copy
+import math
 
 # moveit stuff
 import moveit_commander
@@ -35,6 +36,9 @@ class Arm_Contrl:
         # get waypoints
         self.waypoints = waypoints
 
+        # for drawing settings
+        self.line_gap = 0.01
+
     def move(self, goal_state):
         # get current state
         current_state = geometry_msgs.msg.Pose()
@@ -48,7 +52,36 @@ class Arm_Contrl:
         # self.group.stop()
         self.group.clear_pose_targets()
         print("achieve move goal")
-        
+
+    def draw_line(self, start_point, end_point):
+        # get current state
+        current_state = geometry_msgs.msg.Pose()
+        current_state = self.group.get_current_pose().pose
+
+        line_points = []
+        line_points.append(current_state)
+        delta_x = end_point.position.x - start_point.position.x
+        delta_y = end_point.position.y - start_point.position.y
+        dist = sqrt(delta_x* delta_x + delta_y * delta_y)
+        cos_theta = (dist * dist + delta_x * delta_x - delta_y * delta_y) / 2 * dist * delta_x
+        sin_theta = sqrt(1 - cos_theta * cos_theta)
+        num_points = dist / self.line_gap
+
+        temp_point = geometry_msgs.msg.Pose()
+        temp_point = start_point
+        temp_point.position.x = start_point.position.x
+        temp_point.position.y = start_point.position.y
+        temp_point.position.z = start_point.position.z
+        temp_point.orientation.x = start_point.orientation.x
+        temp_point.orientation.y = start_point.orientation.y
+        temp_point.orientation.z = start_point.orientation.z
+        temp_point.orientation.w = start_point.orientation.w    
+
+        for i in num_points:
+            temp_point.position.x += self.line_gap * cos_theta
+            temp_point.position.y += self.line_gap * sin_theta
+            line_points.append(temp_point)
+                
 
 
     def controller(self): 
@@ -67,7 +100,7 @@ class Arm_Contrl:
         goal_state.orientation.z = current_state.orientation.z
         goal_state.orientation.w = current_state.orientation.w                  
 
-        self.move(goal_state)
+        self.move(goal_state) 
         # end move done
 
         # set plan
