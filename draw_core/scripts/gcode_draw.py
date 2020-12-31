@@ -56,13 +56,15 @@ class Interpreter():
                     yc = arc_center_coords['y'] + yb
                     self.planner.G3(self.mac.pos.vector[0], self.mac.pos.vector[1], xc, yc, self.fr)
                     # return True
+                elif isinstance(b,GCodeStopSpindle):
+                    print "stop"
                 else:
-                    print("Unknown Instruction: ", b)
+                    print "Unknown Instruction: ", b
             # return False
 
 if __name__=="__main__":
     g = Interpreter()
     manipulator = gcode_excute.gcode_excute(0,0,0,0)
     g.setPlanner(manipulator)
-    g.gcode_draw("/home/derek/project/draw_robot/src/drawing_manipulator/draw_core/scripts/img/gcode.gcode")
+    g.gcode_draw("/home/derek/project/draw_robot/src/drawing_manipulator/draw_core/scripts/img/gcode_output/neu.gcode")
 

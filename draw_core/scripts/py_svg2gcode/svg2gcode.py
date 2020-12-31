@@ -140,26 +140,29 @@ def generate_gcode(filename):
                 points = point_generator(d, m, smoothness)
 
                 log += debug_log("\tPoints: "+str(points))
+                try :
+                    for x,y in points:
 
-                for x,y in points:
+                        #log += debug_log("\t  pt: "+str((x,y)))
 
-                    #log += debug_log("\t  pt: "+str((x,y)))
+                        x = scale*x
+                        y = bed_max_y - scale*y
 
-                    x = scale*x
-                    y = bed_max_y - scale*y
+                        log += debug_log("\t  pt: "+str((x,y)))
 
-                    log += debug_log("\t  pt: "+str((x,y)))
-
-                    if x >= 0 and x <= bed_max_x and y >= 0 and y <= bed_max_y:
-                        if new_shape:
-                            gcode += ("G0 X%0.1f Y%0.1f\n" % (x, y))
-                            gcode += "M03\n"
-                            new_shape = False
+                        if x >= 0 and x <= bed_max_x and y >= 0 and y <= bed_max_y:
+                            if new_shape:
+                                gcode += ("G0 X%0.1f Y%0.1f\n" % (x, y))
+                                gcode += "M03\n"
+                                new_shape = False
+                            else:
+                                gcode += ("G0 X%0.1f Y%0.1f\n" % (x, y))
+                            log += debug_log("\t    --Point printed")
                         else:
-                            gcode += ("G0 X%0.1f Y%0.1f\n" % (x, y))
-                        log += debug_log("\t    --Point printed")
-                    else:
-                        log += debug_log("\t    --POINT NOT PRINTED ("+str(bed_max_x)+","+str(bed_max_y)+")")
+                            log += debug_log("\t    --POINT NOT PRINTED ("+str(bed_max_x)+","+str(bed_max_y)+")")
+                except :
+                    print "ERROR_POINT"
+                    pass
                 gcode += shape_postamble + "\n"
             else:
               log += debug_log("\tNO PATH INSTRUCTIONS FOUND!!")
