@@ -113,24 +113,26 @@ if __name__=="__main__":
 
     p = group.get_current_pose().pose
 
-    p.position.x += 0.05
-    p.position.y += 0.05
+    coef = -1.0
+
+    p.position.x += 0.05 * coef
+    p.position.y += 0.05 * coef
     waypoints.append(copy.deepcopy(p))
 
-    p.position.x += 0.05
-    p.position.y += 0.05
+    p.position.x += 0.05 * coef
+    p.position.y += 0.05 * coef
     waypoints.append(copy.deepcopy(p))
 
-    p.position.x += 0.05
-    p.position.y += 0.05
+    p.position.x += 0.05 * coef
+    p.position.y += 0.05 * coef
     waypoints.append(copy.deepcopy(p))
 
-    p.position.x += 0.05
-    p.position.y += 0.05
+    p.position.x += 0.05 * coef
+    p.position.y += 0.05 * coef
     waypoints.append(copy.deepcopy(p))
 
-    p.position.x += 0.05
-    p.position.y += 0.05
+    p.position.x += 0.05 * coef
+    p.position.y += 0.05 * coef
     waypoints.append(copy.deepcopy(p))
     # end test
 
