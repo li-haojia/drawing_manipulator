@@ -79,8 +79,8 @@ class Arm_Contrl():
         delta_x = end_point.position.x - current_state.position.x
         delta_y = end_point.position.y - current_state.position.y
         dist = math.sqrt(delta_x * delta_x + delta_y * delta_y)
-        cos_theta = (dist * dist + delta_x * delta_x - delta_y * delta_y) / 2 * dist * delta_x
-        sin_theta = math.sqrt(1 - cos_theta * cos_theta)
+        # cos_theta = (dist * dist + delta_x * delta_x - delta_y * delta_y) / 2 * dist * delta_x
+        # sin_theta = math.sqrt(1 - cos_theta * cos_theta)
         num_points = int(dist / self.line_gap)
         print("dist", dist)
         print("num_points", num_points)
@@ -95,8 +95,8 @@ class Arm_Contrl():
         temp_point.orientation.w = current_state.orientation.w    
 
         for i in range(num_points):
-            temp_point.position.x += self.line_gap * cos_theta
-            temp_point.position.y += self.line_gap * sin_theta
+            temp_point.position.x += delta_x / num_points
+            temp_point.position.y += delta_y / num_points
             line_points.append(temp_point)
         
         # draw the line
