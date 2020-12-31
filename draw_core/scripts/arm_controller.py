@@ -24,17 +24,36 @@ class Arm_Contrl:
 
         # initial settings
         reference = String()
-        reference = "world"
+        reference = "base_link"
         self.group.set_pose_reference_frame(reference)
         self.group.allow_replanning(True)
         self.group.set_max_velocity_scaling_factor(0.4)      
         self.group.set_max_acceleration_scaling_factor(0.3)
-        self.group.set_goal_orientation_tolerance(0.1)
-        self.group.set_goal_position_tolerance(0.1)
+        self.group.set_goal_orientation_tolerance(0.2)
+        self.group.set_goal_position_tolerance(0.2)
         self.group.set_planning_time(6.0)
 
         # for drawing settings
         self.line_gap = 0.01
+
+    def go_home(self):
+        goal = geometry_msgs.msg.Pose()
+        goal = self.group.get_current_pose().pose
+        goal.position.x = -0.2
+        goal.position.y = -0.2
+        goal.position.z = 1.05
+        goal.orientation.x = 0.9
+        goal.orientation.y = 0.0
+        goal.orientation.z = 0.0
+        goal.orientation.w = 0.0
+
+        self.group.set_pose_target(goal)
+        plan = self.group.go(wait = True)
+        time.sleep(1.0)
+        self.group.clear_pose_targets()
+        
+        print("I am home now")
+
 
     def move(self, goal_state):
         # get current state
@@ -79,7 +98,6 @@ class Arm_Contrl:
             temp_point.position.x += self.line_gap * cos_theta
             temp_point.position.y += self.line_gap * sin_theta
             line_points.append(temp_point)
-            print(temp_point)
         
         # draw the line
         (line_traj, fraction) = group.compute_cartesian_path(line_points, 0.01, 0,0)
@@ -152,6 +170,7 @@ if __name__=="__main__":
     waypoints = []
 
     p = group.get_current_pose().pose
+    print("current pose", p)
 
     coef = -1.0
 
@@ -186,8 +205,8 @@ if __name__=="__main__":
 
 
     control = Arm_Contrl()
-    # control.controller()
-    control.draw_line(p0, p1)
+    # control.draw_line(p1)
+    control.go_home()
 
 
 
