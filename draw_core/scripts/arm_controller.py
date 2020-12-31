@@ -66,6 +66,8 @@ class Arm_Contrl:
         cos_theta = (dist * dist + delta_x * delta_x - delta_y * delta_y) / 2 * dist * delta_x
         sin_theta = math.sqrt(1 - cos_theta * cos_theta)
         num_points = int(dist / self.line_gap)
+        print("dist", dist)
+        print("num_points", num_points)
 
         temp_point = geometry_msgs.msg.Pose()
         temp_point = start_point
@@ -81,9 +83,10 @@ class Arm_Contrl:
             temp_point.position.x += self.line_gap * cos_theta
             temp_point.position.y += self.line_gap * sin_theta
             line_points.append(temp_point)
+            print(temp_point)
         
         # draw the line
-        (line_traj, fraction) = group.compute_cartesian_path(line_points, 0.1, 0,0)
+        (line_traj, fraction) = group.compute_cartesian_path(line_points, 0.01, 0,0)
         self.group.execute(line_traj, wait=True)
         print("draw the line!")
         time.sleep(1.0)
