@@ -14,7 +14,7 @@ import geometry_msgs.msg
 from std_msgs.msg import String
 
 class Arm_Contrl:
-    def __init__(self, waypoints):
+    def __init__(self):
         self.manipulator = moveit_commander.RobotCommander()
         self.group_name = "manipulator_i5"
         self.group = moveit_commander.MoveGroupCommander(self.group_name)
@@ -32,9 +32,6 @@ class Arm_Contrl:
         self.group.set_goal_orientation_tolerance(0.1)
         self.group.set_goal_position_tolerance(0.1)
         self.group.set_planning_time(6.0)
-
-        # get waypoints
-        self.waypoints = waypoints
 
         # for drawing settings
         self.line_gap = 0.01
@@ -93,54 +90,54 @@ class Arm_Contrl:
                 
 
 
-    def controller(self): 
-        # move done
-        # get current state    
-        current_state = geometry_msgs.msg.Pose()
-        current_state = self.group.get_current_pose().pose                          
+    # def controller(self): 
+    #     # move done
+    #     # get current state    
+    #     current_state = geometry_msgs.msg.Pose()
+    #     current_state = self.group.get_current_pose().pose                          
 
-        # set target state
-        goal_state = geometry_msgs.msg.Pose()
-        goal_state.position.x = current_state.position.x
-        goal_state.position.y = current_state.position.y
-        goal_state.position.z = current_state.position.z - self.height
-        goal_state.orientation.x = current_state.orientation.x
-        goal_state.orientation.y = current_state.orientation.y
-        goal_state.orientation.z = current_state.orientation.z
-        goal_state.orientation.w = current_state.orientation.w                  
+    #     # set target state
+    #     goal_state = geometry_msgs.msg.Pose()
+    #     goal_state.position.x = current_state.position.x
+    #     goal_state.position.y = current_state.position.y
+    #     goal_state.position.z = current_state.position.z - self.height
+    #     goal_state.orientation.x = current_state.orientation.x
+    #     goal_state.orientation.y = current_state.orientation.y
+    #     goal_state.orientation.z = current_state.orientation.z
+    #     goal_state.orientation.w = current_state.orientation.w                  
 
-        self.move(goal_state) 
-        # end move done
+    #     self.move(goal_state) 
+    #     # end move done
 
-        # set plan
-        waypoints = []
-        current_state = geometry_msgs.msg.Pose()
-        current_state = self.group.get_current_pose().pose     
-        waypoints.append(current_state)
-        waypoints += self.waypoints
-        (self.plan, fraction) = group.compute_cartesian_path(waypoints, 0.1, 0,0)
+    #     # set plan
+    #     waypoints = []
+    #     current_state = geometry_msgs.msg.Pose()
+    #     current_state = self.group.get_current_pose().pose     
+    #     waypoints.append(current_state)
+    #     waypoints += self.waypoints
+    #     (self.plan, fraction) = group.compute_cartesian_path(waypoints, 0.1, 0,0)
 
-        self.group.execute(self.plan, wait=True)
-        print("achieve plan goal")
-        time.sleep(1.0)
+    #     self.group.execute(self.plan, wait=True)
+    #     print("achieve plan goal")
+    #     time.sleep(1.0)
 
-        # move up 
-        # get current state    
-        current_state = geometry_msgs.msg.Pose()
-        current_state = self.group.get_current_pose().pose                             
+    #     # move up 
+    #     # get current state    
+    #     current_state = geometry_msgs.msg.Pose()
+    #     current_state = self.group.get_current_pose().pose                             
 
-        # set target state
-        goal_state = geometry_msgs.msg.Pose()
-        goal_state.position.x = current_state.position.x
-        goal_state.position.y = current_state.position.y
-        goal_state.position.z = current_state.position.z + self.height
-        goal_state.orientation.x = current_state.orientation.x
-        goal_state.orientation.y = current_state.orientation.y
-        goal_state.orientation.z = current_state.orientation.z
-        goal_state.orientation.w = current_state.orientation.w                  
+    #     # set target state
+    #     goal_state = geometry_msgs.msg.Pose()
+    #     goal_state.position.x = current_state.position.x
+    #     goal_state.position.y = current_state.position.y
+    #     goal_state.position.z = current_state.position.z + self.height
+    #     goal_state.orientation.x = current_state.orientation.x
+    #     goal_state.orientation.y = current_state.orientation.y
+    #     goal_state.orientation.z = current_state.orientation.z
+    #     goal_state.orientation.w = current_state.orientation.w                  
 
-        self.move(goal_state)
-        # end move up
+    #     self.move(goal_state)
+    #     # end move up
 
 
 if __name__=="__main__":
@@ -189,7 +186,7 @@ if __name__=="__main__":
     # end test
 
 
-    control = Arm_Contrl(waypoints)
+    control = Arm_Contrl()
     # control.controller()
     control.draw_line(p0, p1)
 
