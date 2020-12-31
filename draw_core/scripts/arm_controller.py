@@ -19,9 +19,6 @@ class Arm_Contrl():
         self.group_name = "manipulator_i5"
         self.group = moveit_commander.MoveGroupCommander(self.group_name)
 
-        # for real world settings
-        self.height = 0.15
-
         # initial settings
         reference = String()
         reference = "world"
@@ -35,6 +32,10 @@ class Arm_Contrl():
 
         # for drawing settings
         self.line_gap = 0.01
+
+        # for real world settings
+        self.up_pen_height = 0.45
+        self.low_pen_height = 0.35
 
     def get_current_pos(self):
         return self.group.get_current_pose().pose
@@ -98,61 +99,22 @@ class Arm_Contrl():
         line_points.append(end_point)
         
         # draw the line
-        (line_traj, fraction) = self.group.compute_cartesian_path(line_points, 0.01, 0,avoid_collisions= False)
+        (line_traj, fraction) = self.group.compute_cartesian_path(line_points, self.line_gap, 0,avoid_collisions= False)
         self.group.execute(line_traj, wait=True)
-        print("draw the line!")
-        time.sleep(1.0)
+        time.sleep(0.25)
                 
+    def up_pen(self):   #Up the pen
+        current_state_ = geometry_msgs.msg.Pose()
+        current_state_ = self.group.get_current_pose().pose
+        current_state_.position.z = self.up_pen_height
+        self.draw_line(current_state_)
 
+    def down_pen(self):   #Down the pen
+        current_state_ = geometry_msgs.msg.Pose()
+        current_state_ = self.group.get_current_pose().pose
+        current_state_.position.z = self.down_pen_height
+        self.draw_line(current_state_)
 
-    # def controller(self): 
-    #     # move done
-    #     # get current state    
-    #     current_state = geometry_msgs.msg.Pose()
-    #     current_state = self.group.get_current_pose().pose                          
-
-    #     # set target state
-    #     goal_state = geometry_msgs.msg.Pose()
-    #     goal_state.position.x = current_state.position.x
-    #     goal_state.position.y = current_state.position.y
-    #     goal_state.position.z = current_state.position.z - self.height
-    #     goal_state.orientation.x = current_state.orientation.x
-    #     goal_state.orientation.y = current_state.orientation.y
-    #     goal_state.orientation.z = current_state.orientation.z
-    #     goal_state.orientation.w = current_state.orientation.w                  
-
-    #     self.move(goal_state) 
-    #     # end move done
-
-    #     # set plan
-    #     waypoints = []
-    #     current_state = geometry_msgs.msg.Pose()
-    #     current_state = self.group.get_current_pose().pose     
-    #     waypoints.append(current_state)
-    #     waypoints += self.waypoints
-    #     (self.plan, fraction) = group.compute_cartesian_path(waypoints, 0.1, 0,0)
-
-    #     self.group.execute(self.plan, wait=True)
-    #     print("achieve plan goal")
-    #     time.sleep(1.0)
-
-    #     # move up 
-    #     # get current state    
-    #     current_state = geometry_msgs.msg.Pose()
-    #     current_state = self.group.get_current_pose().pose                             
-
-    #     # set target state
-    #     goal_state = geometry_msgs.msg.Pose()
-    #     goal_state.position.x = current_state.position.x
-    #     goal_state.position.y = current_state.position.y
-    #     goal_state.position.z = current_state.position.z + self.height
-    #     goal_state.orientation.x = current_state.orientation.x
-    #     goal_state.orientation.y = current_state.orientation.y
-    #     goal_state.orientation.z = current_state.orientation.z
-    #     goal_state.orientation.w = current_state.orientation.w                  
-
-    #     self.move(goal_state)
-    #     # end move up
 
 
 if __name__=="__main__":

@@ -62,6 +62,10 @@ class Interpreter():
                     # return True
                 elif isinstance(b,GCodeStopSpindle):
                     print "stop"
+                    self.planner.M5()
+                elif isinstance(b,GCodeStartSpindle):
+                    print "start"
+                    self.planner.M3()
                 else:
                     print "Unknown Instruction: ", b
             # return False
@@ -72,8 +76,10 @@ if __name__=="__main__":
     arm_draw = arm_controller.Arm_Contrl()
     arm_draw.go_home()
     now_pose = arm_draw.get_current_pos()
+    arm_draw.up_pen_height = now_pose.position.z
+    arm_draw.down_pen_height = now_pose.position.z - 0.05
     print "home",now_pose.position.x, now_pose.position.y
-    manipulator = gcode_excute.gcode_excute(now_pose.position.x,now_pose.position.y)
+    manipulator = gcode_excute.gcode_excute(now_pose.position.x,now_pose.position.y,arm_draw)
 
     g.setPlanner(manipulator)
     g.gcode_draw("/home/derek/project/draw_robot/src/drawing_manipulator/draw_core/scripts/img/gcode_output/neu.gcode")

@@ -12,18 +12,17 @@ import moveit_commander
 # msg stuff
 import moveit_msgs.msg
 import geometry_msgs.msg
-from std_msgs.msg import String
 
 class gcode_excute():
-    def __init__(self, x0, y0):
+    def __init__(self, x0, y0,Controller):
         self.x0, self.y0 = x0, y0 # coordinate offset
-        # self.setPosition(xi, yi) # initial position
+
         self.s = -0.001 # scale factor (mm -> m)
 
         self.amax = 0.3
 
         # instanlize controller
-        self.controller = arm_controller.Arm_Contrl()
+        self.controller = Controller
 
     def G0(self, x, y): # the "just go there" instruction
         xn, yn = self.tf(x, y)
@@ -58,6 +57,10 @@ class gcode_excute():
         xcn, ycn = self.tf(xc, yc)
         print "G3",x,y,xc,yc
         # self.path = arc.Arc(self.x, self.y, xn, yn, xcn, ycn, fr, self.amax, cw=False)
+    def M3(self):   # Down the pen
+        self.controller.down_pen()
+    def M5(self):   # Up the pen
+        self.controller.up_pen()
 
     def setPosition(self, x, y):
         self.x, self.y = x, y
