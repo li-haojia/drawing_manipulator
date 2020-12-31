@@ -18,7 +18,7 @@ class gcode_excute():
     def __init__(self, x0, y0):
         self.x0, self.y0 = x0, y0 # coordinate offset
         # self.setPosition(xi, yi) # initial position
-        self.s = 0.003 # scale factor (mm -> m)
+        self.s = -0.003 # scale factor (mm -> m)
 
         self.amax = 0.3
 
@@ -29,9 +29,10 @@ class gcode_excute():
         xn, yn = self.tf(x, y)
         print "G0",xn,yn
         # self.path = line.Line(self.x, self.y, xn, yn, 0.5, self.amax)
-        target_point = geometry_msgs.msg.Pose()
+        target_point = self.controller.get_current_pos()
         target_point.position.x = xn
         target_point.position.y = yn
+        
         self.controller.move(target_point)
 
     def G1(self, x, y, fr): # move to x, y in a line at a speed in mm/minute
@@ -39,7 +40,7 @@ class gcode_excute():
         xn, yn = self.tf(x, y)
         print "G1",xn,yn
         # self.path = line.Line(self.x, self.y, xn, yn, fr, self.amax)
-        target_point = geometry_msgs.msg.Pose()
+        target_point = self.controller.get_current_pos()
         target_point.position.x = xn
         target_point.position.y = yn
         self.controller.move(target_point)
