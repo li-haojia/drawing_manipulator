@@ -1,6 +1,9 @@
+#!/usr/bin/env python
 from pygcode import *
 import os
 import gcode_excute
+import arm_controller
+import rospy
 class Interpreter():
     def __init__(self):
         self.file = None
@@ -63,8 +66,11 @@ class Interpreter():
             # return False
 
 if __name__=="__main__":
+    rospy.init_node("gcode_draw_core")
     g = Interpreter()
     manipulator = gcode_excute.gcode_excute(0,0,0,0)
+    arm_draw = arm_controller.Arm_Contrl()
+    arm_draw.go_home()
     g.setPlanner(manipulator)
     g.gcode_draw("/home/derek/project/draw_robot/src/drawing_manipulator/draw_core/scripts/img/gcode_output/neu.gcode")
 

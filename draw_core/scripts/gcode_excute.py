@@ -1,5 +1,18 @@
 import numpy as np
 import arm_controller
+import sys
+import rospy
+import time
+import copy
+import math
+
+# moveit stuff
+import moveit_commander
+
+# msg stuff
+import moveit_msgs.msg
+import geometry_msgs.msg
+from std_msgs.msg import String
 
 class gcode_excute():
     def __init__(self, xi, yi, x0, y0):
@@ -10,7 +23,7 @@ class gcode_excute():
         self.amax = 0.3
 
         # instanlize controller
-        self.controller = Arm_Contrl()
+        self.controller = arm_controller.Arm_Contrl()
 
     def G0(self, x, y): # the "just go there" instruction
         xn, yn = self.tf(x, y)
@@ -19,7 +32,7 @@ class gcode_excute():
         target_point = geometry_msgs.msg.Pose()
         target_point.position.x = x
         target_point.position.y = y
-        self.controller.draw_line(target_point)
+        self.controller.move(target_point)
 
     def G1(self, x, y, fr): # move to x, y in a line at a speed in mm/minute
         fr /= 1000 * 60 # mm/minute -> m/sec
@@ -29,7 +42,7 @@ class gcode_excute():
         target_point = geometry_msgs.msg.Pose()
         target_point.position.x = x
         target_point.position.y = y
-        self.controller.draw_line(target_point)
+        self.controller.move(target_point)
 
     def G2(self, x, y, xc, yc, fr): # move in a clockwise arc to an endpoint around a center
         fr /= 1000 * 60 # mm/minute -> m/sec

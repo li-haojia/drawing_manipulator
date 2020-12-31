@@ -13,7 +13,7 @@ import moveit_msgs.msg
 import geometry_msgs.msg
 from std_msgs.msg import String
 
-class Arm_Contrl:
+class Arm_Contrl():
     def __init__(self):
         self.manipulator = moveit_commander.RobotCommander()
         self.group_name = "manipulator_i5"
@@ -100,7 +100,7 @@ class Arm_Contrl:
             line_points.append(temp_point)
         
         # draw the line
-        (line_traj, fraction) = group.compute_cartesian_path(line_points, 0.01, 0,0)
+        (line_traj, fraction) = self.group.compute_cartesian_path(line_points, 0.01, 0,0)
         self.group.execute(line_traj, wait=True)
         print("draw the line!")
         time.sleep(1.0)
