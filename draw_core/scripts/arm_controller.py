@@ -81,6 +81,12 @@ class Arm_Contrl:
             temp_point.position.x += self.line_gap * cos_theta
             temp_point.position.y += self.line_gap * sin_theta
             line_points.append(temp_point)
+        
+        # draw the line
+        (line_traj, fraction) = group.compute_cartesian_path(line_points, 0.1, 0,0)
+        self.group.execute(line_traj, wait=True)
+        print("draw the line!")
+        time.sleep(1.0)
                 
 
 
