@@ -24,7 +24,7 @@ class Arm_Contrl():
 
         # initial settings
         reference = String()
-        reference = "base_link"
+        reference = "world"
         self.group.set_pose_reference_frame(reference)
         self.group.allow_replanning(True)
         self.group.set_max_velocity_scaling_factor(1.0)      
@@ -63,7 +63,6 @@ class Arm_Contrl():
         # get current state
         current_state = geometry_msgs.msg.Pose()
         current_state = self.group.get_current_pose().pose
-
         self.group.set_pose_target(goal_state)
 
         # plan and execute
