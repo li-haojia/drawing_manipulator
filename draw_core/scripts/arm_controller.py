@@ -89,21 +89,13 @@ class Arm_Contrl():
         # print("num_points", num_points)
 
         temp_point = geometry_msgs.msg.Pose()
-        temp_point.position.x = current_state.position.x
-        temp_point.position.y = current_state.position.y
-        temp_point.position.z = current_state.position.z
-        temp_point.orientation.x = current_state.orientation.x
-        temp_point.orientation.y = current_state.orientation.y
-        temp_point.orientation.z = current_state.orientation.z
-        temp_point.orientation.w = current_state.orientation.w    
+        temp_point = copy.copy(current_state) 
 
         # for i in range(num_points):
         #     temp_point.position.x += delta_x / num_points
         #     temp_point.position.y += delta_y / num_points
         #     line_points.append(temp_point)
-        temp_point.position.x = end_point.position.x
-        temp_point.position.y = end_point.position.y
-        line_points.append(temp_point)
+        line_points.append(end_point)
         
         # draw the line
         (line_traj, fraction) = self.group.compute_cartesian_path(line_points, 0.01, 0,avoid_collisions= False)
