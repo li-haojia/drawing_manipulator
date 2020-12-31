@@ -47,6 +47,7 @@ class Arm_Contrl:
         time.sleep(5.0)
         # self.group.stop()
         self.group.clear_pose_targets()
+        print("achieve move goal")
         
 
 
@@ -78,7 +79,7 @@ class Arm_Contrl:
         (self.plan, fraction) = group.compute_cartesian_path(waypoints, 0.1, 0,0)
 
         self.group.execute(self.plan, wait=True)
-        print("go plan")
+        print("achieve plan goal")
         time.sleep(1.0)
 
         # move up 
@@ -112,12 +113,24 @@ if __name__=="__main__":
 
     p = group.get_current_pose().pose
 
-    p.position.x += 0.1
-    p.position.y += 0.1
+    p.position.x += 0.05
+    p.position.y += 0.05
     waypoints.append(copy.deepcopy(p))
 
-    p.position.x -= 0.2
-    p.position.y -= 0.2
+    p.position.x += 0.05
+    p.position.y += 0.05
+    waypoints.append(copy.deepcopy(p))
+
+    p.position.x += 0.05
+    p.position.y += 0.05
+    waypoints.append(copy.deepcopy(p))
+
+    p.position.x += 0.05
+    p.position.y += 0.05
+    waypoints.append(copy.deepcopy(p))
+
+    p.position.x += 0.05
+    p.position.y += 0.05
     waypoints.append(copy.deepcopy(p))
     # end test
 
