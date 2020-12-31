@@ -20,5 +20,6 @@ if __name__=="__main__":
     coutours_img = np.zeros_like(img)
     for i in range(len(coutours)):
         cv2.drawContours(coutours_img,coutours,i,(random.randint(0,255),random.randint(0,255),random.randint(0,255)),2)
-    cv2.imshow("img2",coutours_img)
+        cv2.imshow("img2",coutours_img)
+        cv2.waitKey(500)
     cv2.waitKey(0)
