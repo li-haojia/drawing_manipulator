@@ -36,6 +36,9 @@ class Arm_Contrl():
         # for drawing settings
         self.line_gap = 0.01
 
+    def get_current_pos(self):
+        return self.group.get_current_pose().pose
+
     def go_home(self):
         goal = geometry_msgs.msg.Pose()
         goal = self.group.get_current_pose().pose
