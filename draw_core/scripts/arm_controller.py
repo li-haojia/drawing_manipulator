@@ -62,10 +62,10 @@ class Arm_Contrl:
         line_points.append(current_state)
         delta_x = end_point.position.x - start_point.position.x
         delta_y = end_point.position.y - start_point.position.y
-        dist = sqrt(delta_x* delta_x + delta_y * delta_y)
+        dist = math.sqrt(delta_x * delta_x + delta_y * delta_y)
         cos_theta = (dist * dist + delta_x * delta_x - delta_y * delta_y) / 2 * dist * delta_x
-        sin_theta = sqrt(1 - cos_theta * cos_theta)
-        num_points = dist / self.line_gap
+        sin_theta = math.sqrt(1 - cos_theta * cos_theta)
+        num_points = int(dist / self.line_gap)
 
         temp_point = geometry_msgs.msg.Pose()
         temp_point = start_point
@@ -77,7 +77,7 @@ class Arm_Contrl:
         temp_point.orientation.z = start_point.orientation.z
         temp_point.orientation.w = start_point.orientation.w    
 
-        for i in num_points:
+        for i in range(num_points):
             temp_point.position.x += self.line_gap * cos_theta
             temp_point.position.y += self.line_gap * sin_theta
             line_points.append(temp_point)
@@ -143,6 +143,8 @@ class Arm_Contrl:
 if __name__=="__main__":
     moveit_commander.roscpp_initialize(sys.argv)     
     rospy.init_node('drawing_control', anonymous = True)
+    
+    
     # test plan  
     manipulator = moveit_commander.RobotCommander()
     group_name = "manipulator_i5"
@@ -175,9 +177,18 @@ if __name__=="__main__":
     waypoints.append(copy.deepcopy(p))
     # end test
 
+    # test line drawer
+    p0 = group.get_current_pose().pose
+    p1 = copy.deepcopy(p0)
+    coef = -1.0
+    p1.position.x += 0.25 * coef
+    p1.position.y += 0.25 * coef
+    # end test
+
 
     control = Arm_Contrl(waypoints)
-    control.controller()
+    # control.controller()
+    control.draw_line(p0, p1)
 
 
 
