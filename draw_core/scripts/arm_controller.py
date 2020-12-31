@@ -27,9 +27,9 @@ class Arm_Contrl():
         reference = "base_link"
         self.group.set_pose_reference_frame(reference)
         self.group.allow_replanning(True)
-        self.group.set_max_velocity_scaling_factor(0.4)      
-        self.group.set_max_acceleration_scaling_factor(0.3)
-        self.group.set_goal_orientation_tolerance(0.2)
+        self.group.set_max_velocity_scaling_factor(1.0)      
+        self.group.set_max_acceleration_scaling_factor(1.0)
+        self.group.set_goal_orientation_tolerance(0.1)
         self.group.set_goal_position_tolerance(0.001)
         self.group.set_planning_time(6.0)
 
@@ -40,21 +40,22 @@ class Arm_Contrl():
         return self.group.get_current_pose().pose
 
     def go_home(self):
-        goal = geometry_msgs.msg.Pose()
-        goal = self.group.get_current_pose().pose
-        goal.position.x = -0.2
-        goal.position.y = -0.2
-        goal.position.z = 1.05
-        goal.orientation.x = 0.9
-        goal.orientation.y = 0.0
-        goal.orientation.z = 0.0
-        goal.orientation.w = 0.0
+        # goal = geometry_msgs.msg.Pose()
+        # goal = self.group.get_current_pose().pose
+        joint_positions = [0.09833356546924307, -0.13036996652071509, -1.665223463667989, 0.010214026325672795, -1.604895446066772, 0.0984022748028983]
+        self.group.set_joint_value_target(joint_positions)
+        # goal.position.x = -0.2
+        # goal.position.y = -0.2
+        # goal.position.z = 1.05
+        # goal.orientation.x = 0.0
+        # goal.orientation.y = 0.0
+        # goal.orientation.z = 0.0
+        # goal.orientation.w = 1.0
 
-        self.group.set_pose_target(goal)
+        # self.group.set_pose_target(goal)
         plan = self.group.go(wait = True)
         time.sleep(1.0)
         self.group.clear_pose_targets()
-        
         print("I am home now")
 
 
@@ -79,14 +80,14 @@ class Arm_Contrl():
 
         line_points = []
         line_points.append(current_state)
-        delta_x = end_point.position.x - current_state.position.x
-        delta_y = end_point.position.y - current_state.position.y
-        dist = math.sqrt(delta_x * delta_x + delta_y * delta_y)
-        # cos_theta = (dist * dist + delta_x * delta_x - delta_y * delta_y) / 2 * dist * delta_x
-        # sin_theta = math.sqrt(1 - cos_theta * cos_theta)
-        num_points = int(dist / self.line_gap)
-        print("dist", dist)
-        print("num_points", num_points)
+        # delta_x = end_point.position.x - current_state.position.x
+        # delta_y = end_point.position.y - current_state.position.y
+        # dist = math.sqrt(delta_x * delta_x + delta_y * delta_y)
+        # # cos_theta = (dist * dist + delta_x * delta_x - delta_y * delta_y) / 2 * dist * delta_x
+        # # sin_theta = math.sqrt(1 - cos_theta * cos_theta)
+        # num_points = int(dist / self.line_gap)
+        # print("dist", dist)
+        # print("num_points", num_points)
 
         temp_point = geometry_msgs.msg.Pose()
         temp_point.position.x = current_state.position.x
@@ -97,16 +98,16 @@ class Arm_Contrl():
         temp_point.orientation.z = current_state.orientation.z
         temp_point.orientation.w = current_state.orientation.w    
 
-        for i in range(num_points):
-            temp_point.position.x += delta_x / num_points
-            temp_point.position.y += delta_y / num_points
-            line_points.append(temp_point)
+        # for i in range(num_points):
+        #     temp_point.position.x += delta_x / num_points
+        #     temp_point.position.y += delta_y / num_points
+        #     line_points.append(temp_point)
         temp_point.position.x = end_point.position.x
         temp_point.position.y = end_point.position.y
         line_points.append(temp_point)
         
         # draw the line
-        (line_traj, fraction) = self.group.compute_cartesian_path(line_points, 0.001, 0,0)
+        (line_traj, fraction) = self.group.compute_cartesian_path(line_points, 0.01, 0,avoid_collisions= False)
         self.group.execute(line_traj, wait=True)
         print("draw the line!")
         time.sleep(1.0)
@@ -176,8 +177,9 @@ if __name__=="__main__":
     waypoints = []
 
     p = group.get_current_pose().pose
+    j = group.get_current_joint_values()
     print("current pose", p)
-
+    print("current_joint_values", j)
     coef = -1.0
 
     p.position.x += 0.05 * coef

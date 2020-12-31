@@ -32,7 +32,7 @@ class gcode_excute():
         target_point = geometry_msgs.msg.Pose()
         target_point.position.x = xn
         target_point.position.y = yn
-        self.controller.draw_line(target_point)
+        self.controller.move(target_point)
 
     def G1(self, x, y, fr): # move to x, y in a line at a speed in mm/minute
         fr /= 1000 * 60 # mm/minute -> m/sec
@@ -42,7 +42,7 @@ class gcode_excute():
         target_point = geometry_msgs.msg.Pose()
         target_point.position.x = xn
         target_point.position.y = yn
-        self.controller.draw_line(target_point)
+        self.controller.move(target_point)
 
     def G2(self, x, y, xc, yc, fr): # move in a clockwise arc to an endpoint around a center
         fr /= 1000 * 60 # mm/minute -> m/sec
