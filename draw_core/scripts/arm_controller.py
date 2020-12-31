@@ -30,7 +30,7 @@ class Arm_Contrl():
         self.group.set_max_velocity_scaling_factor(0.4)      
         self.group.set_max_acceleration_scaling_factor(0.3)
         self.group.set_goal_orientation_tolerance(0.2)
-        self.group.set_goal_position_tolerance(0.2)
+        self.group.set_goal_position_tolerance(0.002)
         self.group.set_planning_time(6.0)
 
         # for drawing settings
@@ -101,6 +101,9 @@ class Arm_Contrl():
             temp_point.position.x += delta_x / num_points
             temp_point.position.y += delta_y / num_points
             line_points.append(temp_point)
+        temp_point.position.x = end_point.position.x
+        temp_point.position.y = end_point.position.y
+        line_points.append(temp_point)
         
         # draw the line
         (line_traj, fraction) = self.group.compute_cartesian_path(line_points, 0.01, 0,0)

@@ -70,10 +70,11 @@ if __name__=="__main__":
     rospy.init_node("gcode_draw_core")
     g = Interpreter()
     arm_draw = arm_controller.Arm_Contrl()
-    now_pose = arm_draw.get_current_pos()
-
-    manipulator = gcode_excute.gcode_excute(now_pose.position.x,now_pose.position.y)
     arm_draw.go_home()
+    now_pose = arm_draw.get_current_pos()
+    print "home",now_pose.position.x, now_pose.position.y
+    manipulator = gcode_excute.gcode_excute(now_pose.position.x,now_pose.position.y)
+
     g.setPlanner(manipulator)
     g.gcode_draw("/home/derek/project/draw_robot/src/drawing_manipulator/draw_core/scripts/img/gcode_output/neu.gcode")
 
