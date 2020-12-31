@@ -50,15 +50,15 @@ class Arm_Contrl:
         self.group.clear_pose_targets()
         print("achieve move goal")
 
-    def draw_line(self, start_point, end_point):
+    def draw_line(self, end_point):
         # get current state
         current_state = geometry_msgs.msg.Pose()
         current_state = self.group.get_current_pose().pose
 
         line_points = []
         line_points.append(current_state)
-        delta_x = end_point.position.x - start_point.position.x
-        delta_y = end_point.position.y - start_point.position.y
+        delta_x = end_point.position.x - current_state.position.x
+        delta_y = end_point.position.y - current_state.position.y
         dist = math.sqrt(delta_x * delta_x + delta_y * delta_y)
         cos_theta = (dist * dist + delta_x * delta_x - delta_y * delta_y) / 2 * dist * delta_x
         sin_theta = math.sqrt(1 - cos_theta * cos_theta)
@@ -67,14 +67,13 @@ class Arm_Contrl:
         print("num_points", num_points)
 
         temp_point = geometry_msgs.msg.Pose()
-        temp_point = start_point
-        temp_point.position.x = start_point.position.x
-        temp_point.position.y = start_point.position.y
-        temp_point.position.z = start_point.position.z
-        temp_point.orientation.x = start_point.orientation.x
-        temp_point.orientation.y = start_point.orientation.y
-        temp_point.orientation.z = start_point.orientation.z
-        temp_point.orientation.w = start_point.orientation.w    
+        temp_point.position.x = current_state.position.x
+        temp_point.position.y = current_state.position.y
+        temp_point.position.z = current_state.position.z
+        temp_point.orientation.x = current_state.orientation.x
+        temp_point.orientation.y = current_state.orientation.y
+        temp_point.orientation.z = current_state.orientation.z
+        temp_point.orientation.w = current_state.orientation.w    
 
         for i in range(num_points):
             temp_point.position.x += self.line_gap * cos_theta
