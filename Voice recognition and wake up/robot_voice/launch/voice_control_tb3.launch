@@ -1,0 +1,4 @@
+<launch>
+	<node pkg="robot_voice" type="iat_publish" name="voiceRecognition" output="screen" launch-prefix="gnome-terminal -e"/>
+	<node pkg="robot_voice" type="sub_word_tb3" name="sub_word_tb3" output="screen" launch-prefix="gnome-terminal -e"/>
+</launch>
