@@ -24,8 +24,8 @@ class Arm_Contrl():
         reference = "world"
         self.group.set_pose_reference_frame(reference)
         self.group.allow_replanning(True)
-        self.group.set_max_velocity_scaling_factor(1.0)      
-        self.group.set_max_acceleration_scaling_factor(1.0)
+        self.group.set_max_velocity_scaling_factor(0.5)      
+        self.group.set_max_acceleration_scaling_factor(0.5)
         self.group.set_goal_orientation_tolerance(0.001)
         self.group.set_goal_position_tolerance(0.001)
         self.group.set_planning_time(6.0)
@@ -116,7 +116,7 @@ class Arm_Contrl():
         self.draw_line(current_state_)
 
 
-
+# 当运行 arm_controller 时候 不断获取当前位置以及姿态
 if __name__=="__main__":
     moveit_commander.roscpp_initialize(sys.argv)     
     rospy.init_node('drawing_control', anonymous = True)
@@ -126,48 +126,14 @@ if __name__=="__main__":
     manipulator = moveit_commander.RobotCommander()
     group_name = "manipulator_i5"
     group = moveit_commander.MoveGroupCommander(group_name)
+    rate = rospy.Rate(2) # 0.5sec
+    while not rospy.is_shutdown():
+        p = group.get_current_pose().pose
+        j = group.get_current_joint_values()
+        print("current pose", p)
+        print("current_joint_values", j)
+        rate.sleep()
 
-    waypoints = []
-
-    p = group.get_current_pose().pose
-    j = group.get_current_joint_values()
-    print("current pose", p)
-    print("current_joint_values", j)
-    coef = -1.0
-
-    p.position.x += 0.05 * coef
-    p.position.y += 0.05 * coef
-    waypoints.append(copy.deepcopy(p))
-
-    p.position.x += 0.05 * coef
-    p.position.y += 0.05 * coef
-    waypoints.append(copy.deepcopy(p))
-
-    p.position.x += 0.05 * coef
-    p.position.y += 0.05 * coef
-    waypoints.append(copy.deepcopy(p))
-
-    p.position.x += 0.05 * coef
-    p.position.y += 0.05 * coef
-    waypoints.append(copy.deepcopy(p))
-
-    p.position.x += 0.05 * coef
-    p.position.y += 0.05 * coef
-    waypoints.append(copy.deepcopy(p))
-    # end test
-
-    # test line drawer
-    p0 = group.get_current_pose().pose
-    p1 = copy.deepcopy(p0)
-    coef = -1.0
-    p1.position.x += 0.25 * coef
-    p1.position.y += 0.25 * coef
-    # end test
-
-
-    control = Arm_Contrl()
-    # control.draw_line(p1)
-    control.go_home()
 
 
 

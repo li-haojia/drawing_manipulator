@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# canny 边缘提取 最终没有用
 import cv2
 import numpy as np
 import random
