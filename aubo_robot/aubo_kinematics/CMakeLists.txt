@@ -3,12 +3,16 @@ project(aubo_kinematics)
 
 add_compile_options(-std=c++11)
 
+if("$ENV{ROS_DISTRO}" STREQUAL "melodic")
+    find_package(catkin REQUIRED COMPONENTS roscpp geometry_msgs moveit_core moveit_kinematics moveit_ros_planning_interface
+      moveit_ros_planning pluginlib tf_conversions)
+    Message(STATUS "<<<<<<<<<<<<<<<<<<<<<<<<<Note: Find Package for melodic in kinematics build")
+endif()
 if("$ENV{ROS_DISTRO}" STREQUAL "kinetic")
     find_package(catkin REQUIRED COMPONENTS roscpp geometry_msgs moveit_core moveit_kinematics moveit_ros_planning_interface
       moveit_ros_planning pluginlib tf_conversions)
     Message(STATUS "<<<<<<<<<<<<<<<<<<<<<<<<<Note: Find Package for kinetic in kinematics build")
 endif()
-
 
 find_package(Boost REQUIRED COMPONENTS system)
 
