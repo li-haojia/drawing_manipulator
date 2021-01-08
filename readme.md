@@ -10,12 +10,51 @@ svg图片边缘轮廓->转为gcode->解析gcode ->运动学逆解执行
 ```bash
 # 在第一个终端打开
 roslaunch aubo_i5_moveit_config moveit_planning_execution.launch robot_ip:=127.0.0.1
+
 # 在第二个终端打开
 roslaunch aubo_gazebo aubo_i5_gazebo_control.launch
-# 在第三个工作空间打开 并切换到工作空间
 
+# 在第三个终端启动绘图程序
+roslaunch draw_core start_draw.launch
 ```
+即可看到aubo机械臂在gazebo下正在空中绘制图形
+
+
+指定gcode文件方法
+```bash
+roslaunch draw_core simulation_draw.launch file:="your gcode path"
+```
+
+#### 实物运行
+
 1. 原点设定
+```bash
+# 在第一个终端启动机械臂 注意替换自己的机械臂IP地址
+roslaunch aubo_i5_moveit_config moveit_planning_execution.launch sim:=false robot_ip:=192.168.5.10
+```
+
+**使用示教器将机械臂运行到绘制的原点(原点定义为 绘图平面的0,0点 并且该点高度为落笔绘制高度)**
+
+```bash
+# 在第二个终端启动绘图程序
+rosrun draw_core arm_controller.py
+```
+
+记录下终端中 `current_joint_values`的值
+
+填入`draw_core/scripts/arm_controller.py` 中`go_home`函数`joint_positions` 数组中
+
+
+2. 运行Gcode 绘制
+```bash
+# 在第一个终端启动机械臂 注意替换自己的机械臂IP地址
+roslaunch aubo_i5_moveit_config moveit_planning_execution.launch sim:=false robot_ip:=192.168.5.10
+
+# 在第二个终端启动绘图程序
+roslaunch draw_core start_draw.launch
+```
+Enjoy it!
+
 
 ### 文件结构
 `aubo_robot` 奥博机械臂驱动  
