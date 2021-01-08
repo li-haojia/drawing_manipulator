@@ -6,6 +6,9 @@
 ## 展示效果
 [YouTube](https://youtu.be/vfwGCcCbXIA)
 
+[BiliBili](https://www.bilibili.com/video/BV1aK411M7H8/)
+
+[![draw](img/draw.jpg)](https://www.bilibili.com/video/BV1aK411M7H8/)
 ## 绘图部分
 svg图片边缘轮廓->转为gcode->解析gcode ->运动学逆解执行
 ### 运行方法
