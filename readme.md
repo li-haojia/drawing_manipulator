@@ -6,7 +6,16 @@
 ## 绘图部分
 svg图片边缘轮廓->转为gcode->解析gcode ->运动学逆解执行
 ### 运行方法
+#### 仿真测试
+```bash
+# 在第一个终端打开
+roslaunch aubo_i5_moveit_config moveit_planning_execution.launch robot_ip:=127.0.0.1
+# 在第二个终端打开
+roslaunch aubo_gazebo aubo_i5_gazebo_control.launch
+# 在第三个工作空间打开 并切换到工作空间
 
+```
+1. 原点设定
 
 ### 文件结构
 `aubo_robot` 奥博机械臂驱动  

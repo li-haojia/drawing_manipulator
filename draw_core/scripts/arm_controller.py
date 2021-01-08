@@ -116,7 +116,7 @@ class Arm_Contrl():
         self.draw_line(current_state_)
 
 
-# 当运行 arm_controller 时候 不断获取当前位置以及姿态
+# get current pose
 if __name__=="__main__":
     moveit_commander.roscpp_initialize(sys.argv)     
     rospy.init_node('drawing_control', anonymous = True)

@@ -5,6 +5,12 @@ import gcode_excute
 import arm_controller
 import rospy
 import geometry_msgs.msg
+import sys
+import argparse
+import signal
+
+def signal_handler(signal, frame):
+    sys.exit()
 class Interpreter():
     def __init__(self):
         self.file = None
@@ -72,6 +78,13 @@ class Interpreter():
 
 if __name__=="__main__":
     rospy.init_node("gcode_draw_core",anonymous=True)
+    # capture SIGINT signal, e.g., Ctrl+C
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGQUIT, signal_handler)
+    parser = argparse.ArgumentParser("Draw gcode with moveit!")
+    parser.add_argument('filename', help="Gcode file path")
+    args, unpar = parser.parse_known_args()
     g = Interpreter()
     arm_draw = arm_controller.Arm_Contrl()
     arm_draw.go_home()
@@ -83,5 +96,7 @@ if __name__=="__main__":
     manipulator = gcode_excute.gcode_excute(now_pose.position.x,now_pose.position.y,arm_draw)
 
     g.setPlanner(manipulator)
-    g.gcode_draw("src/drawing_manipulator/draw_core/scripts/img/gcode_output/neu.gcode")
+
+    print('--->Load file:',args.filename )
+    g.gcode_draw(args.filename)
 
