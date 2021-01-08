@@ -63,6 +63,7 @@ Enjoy it!
 
 **3. SVG图片转Gcode**
 ```bash
+# 别忘记 source ros的工作空间 source devel/setup.bash
 roscd draw_core
 cd scripts/
 python svg_convert.py "your svg path"
