@@ -3,6 +3,9 @@
 本系统在 Ubuntu 16.04 + ros kinetic下测试通过  
 机械臂控制采用move_it  
 导航控制采用move_base  
+## 展示效果
+[YouTube](https://youtu.be/vfwGCcCbXIA)
+
 ## 绘图部分
 svg图片边缘轮廓->转为gcode->解析gcode ->运动学逆解执行
 ### 运行方法
