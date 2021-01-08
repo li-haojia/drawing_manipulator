@@ -3,7 +3,11 @@ import cv2
 import sys
 import os
 import numpy as np
-
+import argparse
 import py_svg2gcode
 
-py_svg2gcode.generate_gcode("/home/derek/project/draw_robot/src/drawing_manipulator/draw_core/scripts/img/neu.svg")
+if __name__=="__main__":
+    parser = argparse.ArgumentParser("Convert svg to G-code")
+    parser.add_argument('filename', help="SVG file path")
+    args = parser.parse_args()
+    py_svg2gcode.generate_gcode(args.filename)

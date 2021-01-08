@@ -27,7 +27,7 @@ roslaunch draw_core simulation_draw.launch file:="your gcode path"
 
 #### 实物运行
 
-1. 原点设定
+**1. 原点设定**
 ```bash
 # 在第一个终端启动机械臂 注意替换自己的机械臂IP地址
 roslaunch aubo_i5_moveit_config moveit_planning_execution.launch sim:=false robot_ip:=192.168.5.10
@@ -45,7 +45,7 @@ rosrun draw_core arm_controller.py
 填入`draw_core/scripts/arm_controller.py` 中`go_home`函数`joint_positions` 数组中
 
 
-2. 运行Gcode 绘制
+**2. 运行Gcode 绘制**
 ```bash
 # 在第一个终端启动机械臂 注意替换自己的机械臂IP地址
 roslaunch aubo_i5_moveit_config moveit_planning_execution.launch sim:=false robot_ip:=192.168.5.10
@@ -53,8 +53,22 @@ roslaunch aubo_i5_moveit_config moveit_planning_execution.launch sim:=false robo
 # 在第二个终端启动绘图程序
 roslaunch draw_core start_draw.launch
 ```
+
+指定gcode文件方法
+```bash
+roslaunch draw_core simulation_draw.launch file:="your gcode path"
+```
+
 Enjoy it!
 
+**3. SVG图片转Gcode**
+```bash
+roscd draw_core
+cd scripts/
+python svg_convert.py "your svg path"
+```
+
+转换完成的Gcode与图片保存在同一个目录下的gcode_output,并且与图片文件名称相同.
 
 ### 文件结构
 `aubo_robot` 奥博机械臂驱动  
