@@ -3,6 +3,10 @@
 本系统在 Ubuntu 16.04 + ros kinetic下测试通过  
 机械臂控制采用move_it  
 导航控制采用move_base  
+## Contributors
+[许焱然*](https://github.com/Xu-Yanran) [李昊佳*](https://github.com/mywisdomfly) [邓志豪](https://github.com/zacdeng) 黄峥沁
+
+*equal contribution
 ## 展示效果
 [YouTube](https://youtu.be/vfwGCcCbXIA)
 
